@@ -2,6 +2,7 @@ extern crate ndi;
 use std::iter::FromIterator;
 
 fn main() {
+    ndi::load_library_default().unwrap();
     ndi::initialize().unwrap();
 
     let find = ndi::FindBuilder::new().build().unwrap();

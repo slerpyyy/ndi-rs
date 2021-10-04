@@ -7,7 +7,13 @@
 //!
 
 use internal::{bindings::*, OnDrop};
-use std::{convert::TryFrom, ffi::{CStr, CString}, fmt::{Debug, Display}, ptr::{null, null_mut}, sync::Arc};
+use std::{
+    convert::TryFrom,
+    ffi::{CStr, CString},
+    fmt::{Debug, Display},
+    ptr::{null, null_mut},
+    sync::Arc,
+};
 
 /// The error type used in this crate
 pub mod error;
@@ -869,6 +875,31 @@ impl Drop for MetaData {
 /// the call to that function will panic.
 pub fn load_library(path: impl AsRef<std::ffi::OsStr>) -> Result<(), libloading::Error> {
     unsafe { internal::load(path) }
+}
+
+/// Convenience function for loading the library using their canonical file name
+///
+/// See [`load_library`] for more.
+pub fn load_library_default() -> Result<(), libloading::Error> {
+    #[cfg(target_os = "windows")]
+    let names = ["Processing.NDI.Lib.x86.dll", "Processing.NDI.Lib.x64.dll"];
+
+    #[cfg(target_os = "linux")]
+    let names = ["libndi.so.4", "libndi.so", "libndi"];
+
+    let mut result = Ok(());
+    let mut path = std::env::current_exe().unwrap();
+
+    for name in names {
+        path.set_file_name(name);
+        result = load_library(&path);
+
+        if result.is_ok() {
+            break;
+        }
+    }
+
+    result
 }
 
 /// Start the library

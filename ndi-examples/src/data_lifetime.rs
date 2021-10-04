@@ -16,6 +16,7 @@ fn get_frame(source: &ndi::Source) -> ndi::VideoData {
 }
 
 fn main() {
+    ndi::load_library_default().unwrap();
     ndi::initialize().unwrap();
 
     let find = ndi::FindBuilder::new().build().unwrap();

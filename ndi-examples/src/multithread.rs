@@ -5,7 +5,9 @@ use std::{
 };
 
 fn main() {
+    ndi::load_library_default().unwrap();
     ndi::initialize().unwrap();
+
     let find = ndi::FindBuilder::new().build().unwrap();
 
     let sources = find.current_sources(1000).unwrap();

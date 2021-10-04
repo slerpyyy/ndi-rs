@@ -2,6 +2,7 @@ use std::io;
 use std::time::Instant;
 
 fn main() {
+    ndi::load_library_default().unwrap();
     ndi::initialize().unwrap();
 
     let find = ndi::Find::new().unwrap();
