@@ -7,13 +7,7 @@
 //!
 
 use internal::{bindings::*, OnDrop};
-use std::{
-    convert::TryFrom,
-    ffi::{CStr, CString},
-    fmt::{Debug, Display},
-    ptr::{null, null_mut},
-    sync::Arc,
-};
+use std::{convert::TryFrom, ffi::{CStr, CString}, fmt::{Debug, Display}, ptr::{null, null_mut}, sync::Arc};
 
 /// The error type used in this crate
 pub mod error;
@@ -34,6 +28,8 @@ pub use find::*;
 pub use recv::*;
 #[doc(hidden)]
 pub use send::*;
+
+use crate::internal::lib_unwrap;
 
 /// A description of the type of of frame received.
 ///
@@ -607,7 +603,7 @@ impl Drop for VideoData {
     fn drop(&mut self) {
         match &self.parent {
             VideoParent::Recv(recv) => unsafe {
-                NDIlib_recv_free_video_v2(***recv, &mut self.p_instance);
+                lib_unwrap!().NDIlib_recv_free_video_v2(***recv, &mut self.p_instance);
             },
             VideoParent::Owned => {}
         }
@@ -763,7 +759,7 @@ impl Drop for AudioData {
     fn drop(&mut self) {
         match &self.parent {
             AudioParent::Recv(recv) => unsafe {
-                NDIlib_recv_free_audio_v3(***recv, &self.p_instance);
+                lib_unwrap!().NDIlib_recv_free_audio_v3(***recv, &self.p_instance);
             },
             AudioParent::Owned => {}
         }
@@ -855,14 +851,24 @@ impl Drop for MetaData {
     fn drop(&mut self) {
         match &self.parent {
             MetaDataParent::Recv(recv) => unsafe {
-                NDIlib_recv_free_metadata(***recv, &mut self.p_instance);
+                lib_unwrap!().NDIlib_recv_free_metadata(***recv, &mut self.p_instance);
             },
             MetaDataParent::Send(send) => unsafe {
-                NDIlib_send_free_metadata(***send, &mut self.p_instance);
+                lib_unwrap!().NDIlib_send_free_metadata(***send, &mut self.p_instance);
             },
             MetaDataParent::Owned => {}
         }
     }
+}
+
+/// Load the DLL or shared library from a file
+///
+/// **This function must be called before any other function from this crate!**
+///
+/// If another function from this crate if called before the library is loaded,
+/// the call to that function will panic.
+pub fn load_library(path: impl AsRef<std::ffi::OsStr>) -> Result<(), libloading::Error> {
+    unsafe { internal::load(path) }
 }
 
 /// Start the library
@@ -871,11 +877,12 @@ impl Drop for MetaData {
 /// you slightly better performance in some cases. In general it is more "correct" to
 /// call this although it is not required. There is no way to call this that would have
 /// an adverse impact on anything.
+///
 /// This will return Err if the CPU is not sufficiently capable to run NDILib
 /// currently NDILib requires SSE4.2 instructions (see documentation). You can verify
 /// a specific CPU against the library with a call to [`is_supported_CPU()`]
 pub fn initialize() -> Result<(), NotSupported> {
-    if !unsafe { NDIlib_initialize() } {
+    if !unsafe { lib_unwrap!().NDIlib_initialize() } {
         return Err(NotSupported);
     };
 
@@ -887,13 +894,14 @@ pub fn initialize() -> Result<(), NotSupported> {
 /// This is not actually required, but will end the libraries which might get
 /// you slightly better performance in some cases.In general it is more "correct" to
 /// call this although it is not required.
+///
 /// This will destroy everything associated with the library so use it with due caution.
 pub unsafe fn cleanup() {
-    unsafe { NDIlib_destroy() };
+    unsafe { lib_unwrap!().NDIlib_destroy() };
 }
 
 /// Recover whether the current CPU in the system is capable of running NDILib.
 #[allow(non_snake_case)]
 pub fn is_supported_CPU() -> bool {
-    unsafe { NDIlib_is_supported_CPU() }
+    unsafe { lib_unwrap!().NDIlib_is_supported_CPU() }
 }

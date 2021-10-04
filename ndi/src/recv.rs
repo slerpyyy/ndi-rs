@@ -222,7 +222,7 @@ unsafe impl core::marker::Sync for Recv {}
 
 impl Recv {
     fn with_settings(settings: NDIlib_recv_create_v3_t) -> Result<Self, RecvCreateError> {
-        let p_instance = unsafe { NDIlib_recv_create_v3(&settings) };
+        let p_instance = unsafe { lib_unwrap!().NDIlib_recv_create_v3(&settings) };
         if p_instance.is_null() {
             return Err(RecvCreateError);
         }
@@ -230,7 +230,7 @@ impl Recv {
         let guard = Mutex::new(());
         let mut this = Self {
             p_instance: Arc::new(OnDrop::new(p_instance, |s| unsafe {
-                NDIlib_recv_destroy(s)
+                lib_unwrap!().NDIlib_recv_destroy(s)
             })),
             connected: false,
             guard,
@@ -244,7 +244,7 @@ impl Recv {
     ///
     /// It is recommended that you use [`RecvBuilder`] instead if possible
     pub fn new() -> Result<Self, RecvCreateError> {
-        let p_instance = unsafe { NDIlib_recv_create_v3(null()) };
+        let p_instance = unsafe { lib_unwrap!().NDIlib_recv_create_v3(null()) };
 
         if p_instance.is_null() {
             return Err(RecvCreateError);
@@ -253,7 +253,7 @@ impl Recv {
         let guard = Mutex::new(());
         Ok(Self {
             p_instance: Arc::new(OnDrop::new(p_instance, |s| unsafe {
-                NDIlib_recv_destroy(s)
+                lib_unwrap!().NDIlib_recv_destroy(s)
             })),
             connected: false,
             guard,
@@ -263,13 +263,13 @@ impl Recv {
     /// Connect to a source
     pub fn connect(&mut self, source: &Source) {
         let instance: *const NDIlib_source_t = &source.p_instance;
-        unsafe { NDIlib_recv_connect(**self.p_instance, instance) };
+        unsafe { lib_unwrap!().NDIlib_recv_connect(**self.p_instance, instance) };
     }
 
     /// Disconnect from all sources
     pub fn disconnect(&mut self) {
         unsafe {
-            NDIlib_recv_connect(**self.p_instance, null());
+            lib_unwrap!().NDIlib_recv_connect(**self.p_instance, null());
         }
     }
 
@@ -306,7 +306,7 @@ impl Recv {
         };
 
         let response = unsafe {
-            NDIlib_recv_capture_v3(
+            lib_unwrap!().NDIlib_recv_capture_v3(
                 **self.p_instance,
                 video.as_mut_ptr(),
                 audio.as_mut_ptr(),
@@ -348,7 +348,7 @@ impl Recv {
                 mem::MaybeUninit::zeroed()
             };
 
-            let response = NDIlib_recv_capture_v3(
+            let response = lib_unwrap!().NDIlib_recv_capture_v3(
                 **self.p_instance,
                 video.as_mut_ptr(),
                 null_mut(),
@@ -375,7 +375,7 @@ impl Recv {
             } else {
                 mem::MaybeUninit::zeroed()
             };
-            let response = NDIlib_recv_capture_v3(
+            let response = lib_unwrap!().NDIlib_recv_capture_v3(
                 **self.p_instance,
                 null_mut(),
                 audio.as_mut_ptr(),
@@ -401,7 +401,7 @@ impl Recv {
             } else {
                 mem::MaybeUninit::zeroed()
             };
-            let response = NDIlib_recv_capture_v3(
+            let response = lib_unwrap!().NDIlib_recv_capture_v3(
                 **self.p_instance,
                 null_mut(),
                 null_mut(),
@@ -425,7 +425,7 @@ impl Recv {
         let mut p_total: mem::MaybeUninit<NDIlib_recv_performance_t> = mem::MaybeUninit::uninit();
         let mut p_dropped: mem::MaybeUninit<NDIlib_recv_performance_t> = mem::MaybeUninit::uninit();
         unsafe {
-            NDIlib_recv_get_performance(
+            lib_unwrap!().NDIlib_recv_get_performance(
                 **self.p_instance,
                 p_total.as_mut_ptr(),
                 p_dropped.as_mut_ptr(),
@@ -443,7 +443,7 @@ impl Recv {
         let _lock = self.guard.lock().unwrap();
         let mut p_total: mem::MaybeUninit<NDIlib_recv_queue_t> = mem::MaybeUninit::uninit();
         unsafe {
-            NDIlib_recv_get_queue(**self.p_instance, p_total.as_mut_ptr());
+            lib_unwrap!().NDIlib_recv_get_queue(**self.p_instance, p_total.as_mut_ptr());
             let queue = RecvQueueSize::from_binding(p_total.assume_init());
 
             queue
@@ -453,14 +453,14 @@ impl Recv {
     /// Get the current number of sources connected to
     pub fn get_no_connections(&self) -> u32 {
         let _lock = self.guard.lock().unwrap();
-        unsafe { NDIlib_recv_get_no_connections(**self.p_instance) as _ }
+        unsafe { lib_unwrap!().NDIlib_recv_get_no_connections(**self.p_instance) as _ }
     }
 
     /// Set tally info for sender
     pub fn set_tally(&mut self, tally: Tally) {
         let _lock = self.guard.lock().unwrap();
         unsafe {
-            NDIlib_recv_set_tally(**self.p_instance, &tally.into());
+            lib_unwrap!().NDIlib_recv_set_tally(**self.p_instance, &tally.into());
         }
     }
 
@@ -472,7 +472,8 @@ impl Recv {
     pub fn add_connection_metadata(&self, metadata: &MetaData) {
         let _lock = self.guard.lock().unwrap();
         unsafe {
-            NDIlib_recv_add_connection_metadata(**self.p_instance, &metadata.p_instance);
+            lib_unwrap!()
+                .NDIlib_recv_add_connection_metadata(**self.p_instance, &metadata.p_instance);
         }
     }
 
@@ -481,14 +482,14 @@ impl Recv {
     /// This returns `false` if we are not currently connected to anything.
     pub fn send_metadata(&self, metadata: &MetaData) -> bool {
         let _lock = self.guard.lock().unwrap();
-        unsafe { NDIlib_recv_send_metadata(**self.p_instance, &metadata.p_instance) }
+        unsafe { lib_unwrap!().NDIlib_recv_send_metadata(**self.p_instance, &metadata.p_instance) }
     }
 
     /// Clear all connection metadata
     pub fn recv_clear_connection_metadata(&self) {
         let _lock = self.guard.lock().unwrap();
         unsafe {
-            NDIlib_recv_clear_connection_metadata(**self.p_instance);
+            lib_unwrap!().NDIlib_recv_clear_connection_metadata(**self.p_instance);
         }
     }
 }

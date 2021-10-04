@@ -16,6 +16,7 @@ fn run_bindgen() {
         // The input header we would like to generate
         // bindings for.
         .header("ndi/wrapper.h")
+        .dynamic_library_name("NdiDynLib")
         .clang_args(["-I", headers].iter())
         .clang_arg("-fdeclspec")
         // Finish the builder and generate the bindings.

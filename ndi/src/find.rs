@@ -1,4 +1,4 @@
-use crate::internal::OnDrop;
+use crate::internal::{lib_unwrap, OnDrop};
 
 use super::*;
 use std::{ffi::CString, thread::yield_now, time::Instant};
@@ -95,25 +95,25 @@ unsafe impl core::marker::Sync for Find {}
 impl Find {
     /// Create a new instance with default constructor
     pub fn new() -> Result<Self, FindCreateError> {
-        let p_instance = unsafe { NDIlib_find_create_v2(null()) };
+        let p_instance = unsafe { lib_unwrap!().NDIlib_find_create_v2(null()) };
         if p_instance.is_null() {
             return Err(FindCreateError);
         };
 
         let p_instance = Arc::new(OnDrop::new(p_instance, |s| unsafe {
-            NDIlib_find_destroy(s)
+            lib_unwrap!().NDIlib_find_destroy(s)
         }));
         Ok(Self { p_instance })
     }
 
     fn with_settings(settings: NDIlib_find_create_t) -> Result<Self, FindCreateError> {
-        let p_instance = unsafe { NDIlib_find_create_v2(&settings) };
+        let p_instance = unsafe { lib_unwrap!().NDIlib_find_create_v2(&settings) };
         if p_instance.is_null() {
             return Err(FindCreateError);
         };
 
         let p_instance = Arc::new(OnDrop::new(p_instance, |s| unsafe {
-            NDIlib_find_destroy(s)
+            lib_unwrap!().NDIlib_find_destroy(s)
         }));
         Ok(Self { p_instance })
     }
@@ -128,8 +128,9 @@ impl Find {
                 return Err(FindSourcesTimeout);
             }
 
-            let p_sources =
-                unsafe { NDIlib_find_get_current_sources(**self.p_instance, &mut no_sources) };
+            let p_sources = unsafe {
+                lib_unwrap!().NDIlib_find_get_current_sources(**self.p_instance, &mut no_sources)
+            };
 
             if no_sources != 0 {
                 break p_sources;

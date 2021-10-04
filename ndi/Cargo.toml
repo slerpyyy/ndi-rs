@@ -17,5 +17,7 @@ readme = "README.md"
 [features]
 
 [dependencies]
+libloading = "0.7"
+lazy_static = "1.4"
 
 [build-dependencies]
