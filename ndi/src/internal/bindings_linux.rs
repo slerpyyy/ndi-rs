@@ -31,10 +31,9 @@ pub const _STDC_PREDEF_H: u32 = 1;
 pub const __STDC_IEC_559__: u32 = 1;
 pub const __STDC_IEC_559_COMPLEX__: u32 = 1;
 pub const __STDC_ISO_10646__: u32 = 201706;
-pub const __STDC_NO_THREADS__: u32 = 1;
 pub const __GNU_LIBRARY__: u32 = 6;
 pub const __GLIBC__: u32 = 2;
-pub const __GLIBC_MINOR__: u32 = 27;
+pub const __GLIBC_MINOR__: u32 = 28;
 pub const _SYS_CDEFS_H: u32 = 1;
 pub const __glibc_c99_flexarr_available: u32 = 1;
 pub const __WORDSIZE: u32 = 64;
@@ -103,6 +102,14 @@ pub type __int32_t = ::std::os::raw::c_int;
 pub type __uint32_t = ::std::os::raw::c_uint;
 pub type __int64_t = ::std::os::raw::c_long;
 pub type __uint64_t = ::std::os::raw::c_ulong;
+pub type __int_least8_t = __int8_t;
+pub type __uint_least8_t = __uint8_t;
+pub type __int_least16_t = __int16_t;
+pub type __uint_least16_t = __uint16_t;
+pub type __int_least32_t = __int32_t;
+pub type __uint_least32_t = __uint32_t;
+pub type __int_least64_t = __int64_t;
+pub type __uint_least64_t = __uint64_t;
 pub type __quad_t = ::std::os::raw::c_long;
 pub type __u_quad_t = ::std::os::raw::c_ulong;
 pub type __intmax_t = ::std::os::raw::c_long;
@@ -172,14 +179,14 @@ pub type __caddr_t = *mut ::std::os::raw::c_char;
 pub type __intptr_t = ::std::os::raw::c_long;
 pub type __socklen_t = ::std::os::raw::c_uint;
 pub type __sig_atomic_t = ::std::os::raw::c_int;
-pub type int_least8_t = ::std::os::raw::c_schar;
-pub type int_least16_t = ::std::os::raw::c_short;
-pub type int_least32_t = ::std::os::raw::c_int;
-pub type int_least64_t = ::std::os::raw::c_long;
-pub type uint_least8_t = ::std::os::raw::c_uchar;
-pub type uint_least16_t = ::std::os::raw::c_ushort;
-pub type uint_least32_t = ::std::os::raw::c_uint;
-pub type uint_least64_t = ::std::os::raw::c_ulong;
+pub type int_least8_t = __int_least8_t;
+pub type int_least16_t = __int_least16_t;
+pub type int_least32_t = __int_least32_t;
+pub type int_least64_t = __int_least64_t;
+pub type uint_least8_t = __uint_least8_t;
+pub type uint_least16_t = __uint_least16_t;
+pub type uint_least32_t = __uint_least32_t;
+pub type uint_least64_t = __uint_least64_t;
 pub type int_fast8_t = ::std::os::raw::c_schar;
 pub type int_fast16_t = ::std::os::raw::c_long;
 pub type int_fast32_t = ::std::os::raw::c_long;
@@ -927,18 +934,6 @@ fn bindgen_test_layout_NDIlib_tally_t() {
         )
     );
 }
-extern "C" {
-    pub fn NDIlib_initialize() -> bool;
-}
-extern "C" {
-    pub fn NDIlib_destroy();
-}
-extern "C" {
-    pub fn NDIlib_version() -> *const ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn NDIlib_is_supported_CPU() -> bool;
-}
 pub type NDIlib_find_instance_t = *mut ::std::os::raw::c_void;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -993,26 +988,6 @@ fn bindgen_test_layout_NDIlib_find_create_t() {
             stringify!(p_extra_ips)
         )
     );
-}
-extern "C" {
-    pub fn NDIlib_find_create_v2(
-        p_create_settings: *const NDIlib_find_create_t,
-    ) -> NDIlib_find_instance_t;
-}
-extern "C" {
-    pub fn NDIlib_find_destroy(p_instance: NDIlib_find_instance_t);
-}
-extern "C" {
-    pub fn NDIlib_find_get_current_sources(
-        p_instance: NDIlib_find_instance_t,
-        p_no_sources: *mut u32,
-    ) -> *const NDIlib_source_t;
-}
-extern "C" {
-    pub fn NDIlib_find_wait_for_sources(
-        p_instance: NDIlib_find_instance_t,
-        timeout_in_ms: u32,
-    ) -> bool;
 }
 pub type NDIlib_recv_instance_t = *mut ::std::os::raw::c_void;
 pub const NDIlib_recv_bandwidth_e_NDIlib_recv_bandwidth_metadata_only: NDIlib_recv_bandwidth_e =
@@ -1242,224 +1217,6 @@ fn bindgen_test_layout_NDIlib_recv_queue_t() {
         )
     );
 }
-extern "C" {
-    pub fn NDIlib_recv_create_v3(
-        p_create_settings: *const NDIlib_recv_create_v3_t,
-    ) -> NDIlib_recv_instance_t;
-}
-extern "C" {
-    pub fn NDIlib_recv_destroy(p_instance: NDIlib_recv_instance_t);
-}
-extern "C" {
-    pub fn NDIlib_recv_connect(p_instance: NDIlib_recv_instance_t, p_src: *const NDIlib_source_t);
-}
-extern "C" {
-    pub fn NDIlib_recv_capture_v2(
-        p_instance: NDIlib_recv_instance_t,
-        p_video_data: *mut NDIlib_video_frame_v2_t,
-        p_audio_data: *mut NDIlib_audio_frame_v2_t,
-        p_metadata: *mut NDIlib_metadata_frame_t,
-        timeout_in_ms: u32,
-    ) -> NDIlib_frame_type_e;
-}
-extern "C" {
-    pub fn NDIlib_recv_capture_v3(
-        p_instance: NDIlib_recv_instance_t,
-        p_video_data: *mut NDIlib_video_frame_v2_t,
-        p_audio_data: *mut NDIlib_audio_frame_v3_t,
-        p_metadata: *mut NDIlib_metadata_frame_t,
-        timeout_in_ms: u32,
-    ) -> NDIlib_frame_type_e;
-}
-extern "C" {
-    pub fn NDIlib_recv_free_video_v2(
-        p_instance: NDIlib_recv_instance_t,
-        p_video_data: *const NDIlib_video_frame_v2_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_recv_free_audio_v2(
-        p_instance: NDIlib_recv_instance_t,
-        p_audio_data: *const NDIlib_audio_frame_v2_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_recv_free_audio_v3(
-        p_instance: NDIlib_recv_instance_t,
-        p_audio_data: *const NDIlib_audio_frame_v3_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_recv_free_metadata(
-        p_instance: NDIlib_recv_instance_t,
-        p_metadata: *const NDIlib_metadata_frame_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_recv_free_string(
-        p_instance: NDIlib_recv_instance_t,
-        p_string: *const ::std::os::raw::c_char,
-    );
-}
-extern "C" {
-    pub fn NDIlib_recv_send_metadata(
-        p_instance: NDIlib_recv_instance_t,
-        p_metadata: *const NDIlib_metadata_frame_t,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_set_tally(
-        p_instance: NDIlib_recv_instance_t,
-        p_tally: *const NDIlib_tally_t,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_get_performance(
-        p_instance: NDIlib_recv_instance_t,
-        p_total: *mut NDIlib_recv_performance_t,
-        p_dropped: *mut NDIlib_recv_performance_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_recv_get_queue(
-        p_instance: NDIlib_recv_instance_t,
-        p_total: *mut NDIlib_recv_queue_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_recv_clear_connection_metadata(p_instance: NDIlib_recv_instance_t);
-}
-extern "C" {
-    pub fn NDIlib_recv_add_connection_metadata(
-        p_instance: NDIlib_recv_instance_t,
-        p_metadata: *const NDIlib_metadata_frame_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_recv_get_no_connections(
-        p_instance: NDIlib_recv_instance_t,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn NDIlib_recv_get_web_control(
-        p_instance: NDIlib_recv_instance_t,
-    ) -> *const ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_is_supported(p_instance: NDIlib_recv_instance_t) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_recording_is_supported(p_instance: NDIlib_recv_instance_t) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_zoom(p_instance: NDIlib_recv_instance_t, zoom_value: f32) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_zoom_speed(p_instance: NDIlib_recv_instance_t, zoom_speed: f32) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_pan_tilt(
-        p_instance: NDIlib_recv_instance_t,
-        pan_value: f32,
-        tilt_value: f32,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_pan_tilt_speed(
-        p_instance: NDIlib_recv_instance_t,
-        pan_speed: f32,
-        tilt_speed: f32,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_store_preset(
-        p_instance: NDIlib_recv_instance_t,
-        preset_no: ::std::os::raw::c_int,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_recall_preset(
-        p_instance: NDIlib_recv_instance_t,
-        preset_no: ::std::os::raw::c_int,
-        speed: f32,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_auto_focus(p_instance: NDIlib_recv_instance_t) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_focus(p_instance: NDIlib_recv_instance_t, focus_value: f32) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_focus_speed(
-        p_instance: NDIlib_recv_instance_t,
-        focus_speed: f32,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_white_balance_auto(p_instance: NDIlib_recv_instance_t) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_white_balance_indoor(p_instance: NDIlib_recv_instance_t) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_white_balance_outdoor(p_instance: NDIlib_recv_instance_t) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_white_balance_oneshot(p_instance: NDIlib_recv_instance_t) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_white_balance_manual(
-        p_instance: NDIlib_recv_instance_t,
-        red: f32,
-        blue: f32,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_exposure_auto(p_instance: NDIlib_recv_instance_t) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_exposure_manual(
-        p_instance: NDIlib_recv_instance_t,
-        exposure_level: f32,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_ptz_exposure_manual_v2(
-        p_instance: NDIlib_recv_instance_t,
-        iris: f32,
-        gain: f32,
-        shutter_speed: f32,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_recording_start(
-        p_instance: NDIlib_recv_instance_t,
-        p_filename_hint: *const ::std::os::raw::c_char,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_recording_stop(p_instance: NDIlib_recv_instance_t) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_recording_set_audio_level(
-        p_instance: NDIlib_recv_instance_t,
-        level_dB: f32,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_recording_is_recording(p_instance: NDIlib_recv_instance_t) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_recv_recording_get_filename(
-        p_instance: NDIlib_recv_instance_t,
-    ) -> *const ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn NDIlib_recv_recording_get_error(
-        p_instance: NDIlib_recv_instance_t,
-    ) -> *const ::std::os::raw::c_char;
-}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct NDIlib_recv_recording_time_t {
@@ -1515,12 +1272,6 @@ fn bindgen_test_layout_NDIlib_recv_recording_time_t() {
             stringify!(last_time)
         )
     );
-}
-extern "C" {
-    pub fn NDIlib_recv_recording_get_times(
-        p_instance: NDIlib_recv_instance_t,
-        p_times: *mut NDIlib_recv_recording_time_t,
-    ) -> bool;
 }
 pub type NDIlib_send_instance_t = *mut ::std::os::raw::c_void;
 #[repr(C)]
@@ -1588,90 +1339,6 @@ fn bindgen_test_layout_NDIlib_send_create_t() {
         )
     );
 }
-extern "C" {
-    pub fn NDIlib_send_create(
-        p_create_settings: *const NDIlib_send_create_t,
-    ) -> NDIlib_send_instance_t;
-}
-extern "C" {
-    pub fn NDIlib_send_destroy(p_instance: NDIlib_send_instance_t);
-}
-extern "C" {
-    pub fn NDIlib_send_send_video_v2(
-        p_instance: NDIlib_send_instance_t,
-        p_video_data: *const NDIlib_video_frame_v2_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_send_send_video_async_v2(
-        p_instance: NDIlib_send_instance_t,
-        p_video_data: *const NDIlib_video_frame_v2_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_send_send_audio_v2(
-        p_instance: NDIlib_send_instance_t,
-        p_audio_data: *const NDIlib_audio_frame_v2_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_send_send_audio_v3(
-        p_instance: NDIlib_send_instance_t,
-        p_audio_data: *const NDIlib_audio_frame_v3_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_send_send_metadata(
-        p_instance: NDIlib_send_instance_t,
-        p_metadata: *const NDIlib_metadata_frame_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_send_capture(
-        p_instance: NDIlib_send_instance_t,
-        p_metadata: *mut NDIlib_metadata_frame_t,
-        timeout_in_ms: u32,
-    ) -> NDIlib_frame_type_e;
-}
-extern "C" {
-    pub fn NDIlib_send_free_metadata(
-        p_instance: NDIlib_send_instance_t,
-        p_metadata: *const NDIlib_metadata_frame_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_send_get_tally(
-        p_instance: NDIlib_send_instance_t,
-        p_tally: *mut NDIlib_tally_t,
-        timeout_in_ms: u32,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_send_get_no_connections(
-        p_instance: NDIlib_send_instance_t,
-        timeout_in_ms: u32,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn NDIlib_send_clear_connection_metadata(p_instance: NDIlib_send_instance_t);
-}
-extern "C" {
-    pub fn NDIlib_send_add_connection_metadata(
-        p_instance: NDIlib_send_instance_t,
-        p_metadata: *const NDIlib_metadata_frame_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_send_set_failover(
-        p_instance: NDIlib_send_instance_t,
-        p_failover_source: *const NDIlib_source_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_send_get_source_name(
-        p_instance: NDIlib_send_instance_t,
-    ) -> *const NDIlib_source_t;
-}
 pub type NDIlib_routing_instance_t = *mut ::std::os::raw::c_void;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -1715,34 +1382,6 @@ fn bindgen_test_layout_NDIlib_routing_create_t() {
             stringify!(p_groups)
         )
     );
-}
-extern "C" {
-    pub fn NDIlib_routing_create(
-        p_create_settings: *const NDIlib_routing_create_t,
-    ) -> NDIlib_routing_instance_t;
-}
-extern "C" {
-    pub fn NDIlib_routing_destroy(p_instance: NDIlib_routing_instance_t);
-}
-extern "C" {
-    pub fn NDIlib_routing_change(
-        p_instance: NDIlib_routing_instance_t,
-        p_source: *const NDIlib_source_t,
-    ) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_routing_clear(p_instance: NDIlib_routing_instance_t) -> bool;
-}
-extern "C" {
-    pub fn NDIlib_routing_get_no_connections(
-        p_instance: NDIlib_routing_instance_t,
-        timeout_in_ms: u32,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn NDIlib_routing_get_source_name(
-        p_instance: NDIlib_routing_instance_t,
-    ) -> *const NDIlib_source_t;
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -2051,72 +1690,6 @@ fn bindgen_test_layout_NDIlib_audio_frame_interleaved_32f_t() {
         )
     );
 }
-extern "C" {
-    pub fn NDIlib_util_send_send_audio_interleaved_16s(
-        p_instance: NDIlib_send_instance_t,
-        p_audio_data: *const NDIlib_audio_frame_interleaved_16s_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_send_send_audio_interleaved_32s(
-        p_instance: NDIlib_send_instance_t,
-        p_audio_data: *const NDIlib_audio_frame_interleaved_32s_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_send_send_audio_interleaved_32f(
-        p_instance: NDIlib_send_instance_t,
-        p_audio_data: *const NDIlib_audio_frame_interleaved_32f_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_audio_to_interleaved_16s_v2(
-        p_src: *const NDIlib_audio_frame_v2_t,
-        p_dst: *mut NDIlib_audio_frame_interleaved_16s_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_audio_from_interleaved_16s_v2(
-        p_src: *const NDIlib_audio_frame_interleaved_16s_t,
-        p_dst: *mut NDIlib_audio_frame_v2_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_audio_to_interleaved_32s_v2(
-        p_src: *const NDIlib_audio_frame_v2_t,
-        p_dst: *mut NDIlib_audio_frame_interleaved_32s_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_audio_from_interleaved_32s_v2(
-        p_src: *const NDIlib_audio_frame_interleaved_32s_t,
-        p_dst: *mut NDIlib_audio_frame_v2_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_audio_to_interleaved_32f_v2(
-        p_src: *const NDIlib_audio_frame_v2_t,
-        p_dst: *mut NDIlib_audio_frame_interleaved_32f_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_audio_from_interleaved_32f_v2(
-        p_src: *const NDIlib_audio_frame_interleaved_32f_t,
-        p_dst: *mut NDIlib_audio_frame_v2_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_V210_to_P216(
-        p_src_v210: *const NDIlib_video_frame_v2_t,
-        p_dst_p216: *mut NDIlib_video_frame_v2_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_P216_to_V210(
-        p_src_p216: *const NDIlib_video_frame_v2_t,
-        p_dst_v210: *mut NDIlib_video_frame_v2_t,
-    );
-}
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct NDIlib_video_frame_t {
@@ -2346,23 +1919,6 @@ fn bindgen_test_layout_NDIlib_audio_frame_t() {
         )
     );
 }
-extern "C" {
-    pub fn NDIlib_find_create2(
-        p_create_settings: *const NDIlib_find_create_t,
-    ) -> NDIlib_find_instance_t;
-}
-extern "C" {
-    pub fn NDIlib_find_create(
-        p_create_settings: *const NDIlib_find_create_t,
-    ) -> NDIlib_find_instance_t;
-}
-extern "C" {
-    pub fn NDIlib_find_get_sources(
-        p_instance: NDIlib_find_instance_t,
-        p_no_sources: *mut u32,
-        timeout_in_ms: u32,
-    ) -> *const NDIlib_source_t;
-}
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct NDIlib_recv_create_t {
@@ -2431,141 +1987,7 @@ fn bindgen_test_layout_NDIlib_recv_create_t() {
         )
     );
 }
-extern "C" {
-    pub fn NDIlib_recv_create_v2(
-        p_create_settings: *const NDIlib_recv_create_t,
-    ) -> NDIlib_recv_instance_t;
-}
-extern "C" {
-    pub fn NDIlib_recv_create2(
-        p_create_settings: *const NDIlib_recv_create_t,
-    ) -> NDIlib_recv_instance_t;
-}
-extern "C" {
-    pub fn NDIlib_recv_create(
-        p_create_settings: *const NDIlib_recv_create_t,
-    ) -> NDIlib_recv_instance_t;
-}
-extern "C" {
-    pub fn NDIlib_recv_capture(
-        p_instance: NDIlib_recv_instance_t,
-        p_video_data: *mut NDIlib_video_frame_t,
-        p_audio_data: *mut NDIlib_audio_frame_t,
-        p_metadata: *mut NDIlib_metadata_frame_t,
-        timeout_in_ms: u32,
-    ) -> NDIlib_frame_type_e;
-}
-extern "C" {
-    pub fn NDIlib_recv_free_video(
-        p_instance: NDIlib_recv_instance_t,
-        p_video_data: *const NDIlib_video_frame_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_recv_free_audio(
-        p_instance: NDIlib_recv_instance_t,
-        p_audio_data: *const NDIlib_audio_frame_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_send_send_video(
-        p_instance: NDIlib_send_instance_t,
-        p_video_data: *const NDIlib_video_frame_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_send_send_video_async(
-        p_instance: NDIlib_send_instance_t,
-        p_video_data: *const NDIlib_video_frame_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_send_send_audio(
-        p_instance: NDIlib_send_instance_t,
-        p_audio_data: *const NDIlib_audio_frame_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_audio_to_interleaved_16s(
-        p_src: *const NDIlib_audio_frame_t,
-        p_dst: *mut NDIlib_audio_frame_interleaved_16s_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_audio_from_interleaved_16s(
-        p_src: *const NDIlib_audio_frame_interleaved_16s_t,
-        p_dst: *mut NDIlib_audio_frame_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_audio_to_interleaved_32f(
-        p_src: *const NDIlib_audio_frame_t,
-        p_dst: *mut NDIlib_audio_frame_interleaved_32f_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_util_audio_from_interleaved_32f(
-        p_src: *const NDIlib_audio_frame_interleaved_32f_t,
-        p_dst: *mut NDIlib_audio_frame_t,
-    );
-}
 pub type NDIlib_framesync_instance_t = *mut ::std::os::raw::c_void;
-extern "C" {
-    pub fn NDIlib_framesync_create(
-        p_receiver: NDIlib_recv_instance_t,
-    ) -> NDIlib_framesync_instance_t;
-}
-extern "C" {
-    pub fn NDIlib_framesync_destroy(p_instance: NDIlib_framesync_instance_t);
-}
-extern "C" {
-    pub fn NDIlib_framesync_capture_audio(
-        p_instance: NDIlib_framesync_instance_t,
-        p_audio_data: *mut NDIlib_audio_frame_v2_t,
-        sample_rate: ::std::os::raw::c_int,
-        no_channels: ::std::os::raw::c_int,
-        no_samples: ::std::os::raw::c_int,
-    );
-}
-extern "C" {
-    pub fn NDIlib_framesync_capture_audio_v2(
-        p_instance: NDIlib_framesync_instance_t,
-        p_audio_data: *mut NDIlib_audio_frame_v3_t,
-        sample_rate: ::std::os::raw::c_int,
-        no_channels: ::std::os::raw::c_int,
-        no_samples: ::std::os::raw::c_int,
-    );
-}
-extern "C" {
-    pub fn NDIlib_framesync_free_audio(
-        p_instance: NDIlib_framesync_instance_t,
-        p_audio_data: *mut NDIlib_audio_frame_v2_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_framesync_free_audio_v2(
-        p_instance: NDIlib_framesync_instance_t,
-        p_audio_data: *mut NDIlib_audio_frame_v3_t,
-    );
-}
-extern "C" {
-    pub fn NDIlib_framesync_audio_queue_depth(
-        p_instance: NDIlib_framesync_instance_t,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn NDIlib_framesync_capture_video(
-        p_instance: NDIlib_framesync_instance_t,
-        p_video_data: *mut NDIlib_video_frame_v2_t,
-        field_type: NDIlib_frame_format_type_e,
-    );
-}
-extern "C" {
-    pub fn NDIlib_framesync_free_video(
-        p_instance: NDIlib_framesync_instance_t,
-        p_video_data: *mut NDIlib_video_frame_v2_t,
-    );
-}
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct NDIlib_v4 {
@@ -8233,12 +7655,2107 @@ fn bindgen_test_layout_NDIlib_v4() {
 }
 pub type NDIlib_v3 = NDIlib_v4;
 pub type NDIlib_v2 = NDIlib_v4;
-extern "C" {
-    pub fn NDIlib_v4_load() -> *const NDIlib_v4;
+extern crate libloading;
+pub struct NdiDynLib {
+    __library: ::libloading::Library,
+    pub NDIlib_initialize: Result<unsafe extern "C" fn() -> bool, ::libloading::Error>,
+    pub NDIlib_destroy: Result<unsafe extern "C" fn(), ::libloading::Error>,
+    pub NDIlib_version:
+        Result<unsafe extern "C" fn() -> *const ::std::os::raw::c_char, ::libloading::Error>,
+    pub NDIlib_is_supported_CPU: Result<unsafe extern "C" fn() -> bool, ::libloading::Error>,
+    pub NDIlib_find_create_v2: Result<
+        unsafe extern "C" fn(
+            p_create_settings: *const NDIlib_find_create_t,
+        ) -> NDIlib_find_instance_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_find_destroy:
+        Result<unsafe extern "C" fn(p_instance: NDIlib_find_instance_t), ::libloading::Error>,
+    pub NDIlib_find_get_current_sources: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_find_instance_t,
+            p_no_sources: *mut u32,
+        ) -> *const NDIlib_source_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_find_wait_for_sources: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_find_instance_t, timeout_in_ms: u32) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_create_v3: Result<
+        unsafe extern "C" fn(
+            p_create_settings: *const NDIlib_recv_create_v3_t,
+        ) -> NDIlib_recv_instance_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_destroy:
+        Result<unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t), ::libloading::Error>,
+    pub NDIlib_recv_connect: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t, p_src: *const NDIlib_source_t),
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_capture_v2: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_video_data: *mut NDIlib_video_frame_v2_t,
+            p_audio_data: *mut NDIlib_audio_frame_v2_t,
+            p_metadata: *mut NDIlib_metadata_frame_t,
+            timeout_in_ms: u32,
+        ) -> NDIlib_frame_type_e,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_capture_v3: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_video_data: *mut NDIlib_video_frame_v2_t,
+            p_audio_data: *mut NDIlib_audio_frame_v3_t,
+            p_metadata: *mut NDIlib_metadata_frame_t,
+            timeout_in_ms: u32,
+        ) -> NDIlib_frame_type_e,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_free_video_v2: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_video_data: *const NDIlib_video_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_free_audio_v2: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_audio_data: *const NDIlib_audio_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_free_audio_v3: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_audio_data: *const NDIlib_audio_frame_v3_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_free_metadata: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_metadata: *const NDIlib_metadata_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_free_string: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_string: *const ::std::os::raw::c_char,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_send_metadata: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_metadata: *const NDIlib_metadata_frame_t,
+        ) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_set_tally: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_tally: *const NDIlib_tally_t,
+        ) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_get_performance: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_total: *mut NDIlib_recv_performance_t,
+            p_dropped: *mut NDIlib_recv_performance_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_get_queue: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t, p_total: *mut NDIlib_recv_queue_t),
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_clear_connection_metadata:
+        Result<unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t), ::libloading::Error>,
+    pub NDIlib_recv_add_connection_metadata: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_metadata: *const NDIlib_metadata_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_get_no_connections: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_get_web_control: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> *const ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_is_supported: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_recording_is_supported: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_zoom: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t, zoom_value: f32) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_zoom_speed: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t, zoom_speed: f32) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_pan_tilt: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            pan_value: f32,
+            tilt_value: f32,
+        ) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_pan_tilt_speed: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            pan_speed: f32,
+            tilt_speed: f32,
+        ) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_store_preset: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            preset_no: ::std::os::raw::c_int,
+        ) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_recall_preset: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            preset_no: ::std::os::raw::c_int,
+            speed: f32,
+        ) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_auto_focus: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_focus: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t, focus_value: f32) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_focus_speed: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t, focus_speed: f32) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_white_balance_auto: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_white_balance_indoor: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_white_balance_outdoor: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_white_balance_oneshot: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_white_balance_manual: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t, red: f32, blue: f32) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_exposure_auto: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_exposure_manual: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t, exposure_level: f32) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_ptz_exposure_manual_v2: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            iris: f32,
+            gain: f32,
+            shutter_speed: f32,
+        ) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_recording_start: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_filename_hint: *const ::std::os::raw::c_char,
+        ) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_recording_stop: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_recording_set_audio_level: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t, level_dB: f32) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_recording_is_recording: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_recording_get_filename: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> *const ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_recording_get_error: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_recv_instance_t) -> *const ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_recording_get_times: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_times: *mut NDIlib_recv_recording_time_t,
+        ) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_create: Result<
+        unsafe extern "C" fn(
+            p_create_settings: *const NDIlib_send_create_t,
+        ) -> NDIlib_send_instance_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_destroy:
+        Result<unsafe extern "C" fn(p_instance: NDIlib_send_instance_t), ::libloading::Error>,
+    pub NDIlib_send_send_video_v2: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_video_data: *const NDIlib_video_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_send_video_async_v2: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_video_data: *const NDIlib_video_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_send_audio_v2: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_audio_data: *const NDIlib_audio_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_send_audio_v3: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_audio_data: *const NDIlib_audio_frame_v3_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_send_metadata: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_metadata: *const NDIlib_metadata_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_capture: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_metadata: *mut NDIlib_metadata_frame_t,
+            timeout_in_ms: u32,
+        ) -> NDIlib_frame_type_e,
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_free_metadata: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_metadata: *const NDIlib_metadata_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_get_tally: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_tally: *mut NDIlib_tally_t,
+            timeout_in_ms: u32,
+        ) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_get_no_connections: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            timeout_in_ms: u32,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_clear_connection_metadata:
+        Result<unsafe extern "C" fn(p_instance: NDIlib_send_instance_t), ::libloading::Error>,
+    pub NDIlib_send_add_connection_metadata: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_metadata: *const NDIlib_metadata_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_set_failover: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_failover_source: *const NDIlib_source_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_get_source_name: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_send_instance_t) -> *const NDIlib_source_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_routing_create: Result<
+        unsafe extern "C" fn(
+            p_create_settings: *const NDIlib_routing_create_t,
+        ) -> NDIlib_routing_instance_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_routing_destroy:
+        Result<unsafe extern "C" fn(p_instance: NDIlib_routing_instance_t), ::libloading::Error>,
+    pub NDIlib_routing_change: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_routing_instance_t,
+            p_source: *const NDIlib_source_t,
+        ) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_routing_clear: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_routing_instance_t) -> bool,
+        ::libloading::Error,
+    >,
+    pub NDIlib_routing_get_no_connections: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_routing_instance_t,
+            timeout_in_ms: u32,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub NDIlib_routing_get_source_name: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_routing_instance_t) -> *const NDIlib_source_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_send_send_audio_interleaved_16s: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_audio_data: *const NDIlib_audio_frame_interleaved_16s_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_send_send_audio_interleaved_32s: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_audio_data: *const NDIlib_audio_frame_interleaved_32s_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_send_send_audio_interleaved_32f: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_audio_data: *const NDIlib_audio_frame_interleaved_32f_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_audio_to_interleaved_16s_v2: Result<
+        unsafe extern "C" fn(
+            p_src: *const NDIlib_audio_frame_v2_t,
+            p_dst: *mut NDIlib_audio_frame_interleaved_16s_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_audio_from_interleaved_16s_v2: Result<
+        unsafe extern "C" fn(
+            p_src: *const NDIlib_audio_frame_interleaved_16s_t,
+            p_dst: *mut NDIlib_audio_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_audio_to_interleaved_32s_v2: Result<
+        unsafe extern "C" fn(
+            p_src: *const NDIlib_audio_frame_v2_t,
+            p_dst: *mut NDIlib_audio_frame_interleaved_32s_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_audio_from_interleaved_32s_v2: Result<
+        unsafe extern "C" fn(
+            p_src: *const NDIlib_audio_frame_interleaved_32s_t,
+            p_dst: *mut NDIlib_audio_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_audio_to_interleaved_32f_v2: Result<
+        unsafe extern "C" fn(
+            p_src: *const NDIlib_audio_frame_v2_t,
+            p_dst: *mut NDIlib_audio_frame_interleaved_32f_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_audio_from_interleaved_32f_v2: Result<
+        unsafe extern "C" fn(
+            p_src: *const NDIlib_audio_frame_interleaved_32f_t,
+            p_dst: *mut NDIlib_audio_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_V210_to_P216: Result<
+        unsafe extern "C" fn(
+            p_src_v210: *const NDIlib_video_frame_v2_t,
+            p_dst_p216: *mut NDIlib_video_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_P216_to_V210: Result<
+        unsafe extern "C" fn(
+            p_src_p216: *const NDIlib_video_frame_v2_t,
+            p_dst_v210: *mut NDIlib_video_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_find_create2: Result<
+        unsafe extern "C" fn(
+            p_create_settings: *const NDIlib_find_create_t,
+        ) -> NDIlib_find_instance_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_find_create: Result<
+        unsafe extern "C" fn(
+            p_create_settings: *const NDIlib_find_create_t,
+        ) -> NDIlib_find_instance_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_find_get_sources: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_find_instance_t,
+            p_no_sources: *mut u32,
+            timeout_in_ms: u32,
+        ) -> *const NDIlib_source_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_create_v2: Result<
+        unsafe extern "C" fn(
+            p_create_settings: *const NDIlib_recv_create_t,
+        ) -> NDIlib_recv_instance_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_create2: Result<
+        unsafe extern "C" fn(
+            p_create_settings: *const NDIlib_recv_create_t,
+        ) -> NDIlib_recv_instance_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_create: Result<
+        unsafe extern "C" fn(
+            p_create_settings: *const NDIlib_recv_create_t,
+        ) -> NDIlib_recv_instance_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_capture: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_video_data: *mut NDIlib_video_frame_t,
+            p_audio_data: *mut NDIlib_audio_frame_t,
+            p_metadata: *mut NDIlib_metadata_frame_t,
+            timeout_in_ms: u32,
+        ) -> NDIlib_frame_type_e,
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_free_video: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_video_data: *const NDIlib_video_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_recv_free_audio: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_recv_instance_t,
+            p_audio_data: *const NDIlib_audio_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_send_video: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_video_data: *const NDIlib_video_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_send_video_async: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_video_data: *const NDIlib_video_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_send_send_audio: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_send_instance_t,
+            p_audio_data: *const NDIlib_audio_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_audio_to_interleaved_16s: Result<
+        unsafe extern "C" fn(
+            p_src: *const NDIlib_audio_frame_t,
+            p_dst: *mut NDIlib_audio_frame_interleaved_16s_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_audio_from_interleaved_16s: Result<
+        unsafe extern "C" fn(
+            p_src: *const NDIlib_audio_frame_interleaved_16s_t,
+            p_dst: *mut NDIlib_audio_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_audio_to_interleaved_32f: Result<
+        unsafe extern "C" fn(
+            p_src: *const NDIlib_audio_frame_t,
+            p_dst: *mut NDIlib_audio_frame_interleaved_32f_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_util_audio_from_interleaved_32f: Result<
+        unsafe extern "C" fn(
+            p_src: *const NDIlib_audio_frame_interleaved_32f_t,
+            p_dst: *mut NDIlib_audio_frame_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_framesync_create: Result<
+        unsafe extern "C" fn(p_receiver: NDIlib_recv_instance_t) -> NDIlib_framesync_instance_t,
+        ::libloading::Error,
+    >,
+    pub NDIlib_framesync_destroy:
+        Result<unsafe extern "C" fn(p_instance: NDIlib_framesync_instance_t), ::libloading::Error>,
+    pub NDIlib_framesync_capture_audio: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_framesync_instance_t,
+            p_audio_data: *mut NDIlib_audio_frame_v2_t,
+            sample_rate: ::std::os::raw::c_int,
+            no_channels: ::std::os::raw::c_int,
+            no_samples: ::std::os::raw::c_int,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_framesync_capture_audio_v2: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_framesync_instance_t,
+            p_audio_data: *mut NDIlib_audio_frame_v3_t,
+            sample_rate: ::std::os::raw::c_int,
+            no_channels: ::std::os::raw::c_int,
+            no_samples: ::std::os::raw::c_int,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_framesync_free_audio: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_framesync_instance_t,
+            p_audio_data: *mut NDIlib_audio_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_framesync_free_audio_v2: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_framesync_instance_t,
+            p_audio_data: *mut NDIlib_audio_frame_v3_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_framesync_audio_queue_depth: Result<
+        unsafe extern "C" fn(p_instance: NDIlib_framesync_instance_t) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub NDIlib_framesync_capture_video: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_framesync_instance_t,
+            p_video_data: *mut NDIlib_video_frame_v2_t,
+            field_type: NDIlib_frame_format_type_e,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_framesync_free_video: Result<
+        unsafe extern "C" fn(
+            p_instance: NDIlib_framesync_instance_t,
+            p_video_data: *mut NDIlib_video_frame_v2_t,
+        ),
+        ::libloading::Error,
+    >,
+    pub NDIlib_v4_load: Result<unsafe extern "C" fn() -> *const NDIlib_v4, ::libloading::Error>,
+    pub NDIlib_v3_load: Result<unsafe extern "C" fn() -> *const NDIlib_v3, ::libloading::Error>,
+    pub NDIlib_v2_load: Result<unsafe extern "C" fn() -> *const NDIlib_v2, ::libloading::Error>,
 }
-extern "C" {
-    pub fn NDIlib_v3_load() -> *const NDIlib_v3;
-}
-extern "C" {
-    pub fn NDIlib_v2_load() -> *const NDIlib_v2;
+impl NdiDynLib {
+    pub unsafe fn new<P>(path: P) -> Result<Self, ::libloading::Error>
+    where
+        P: AsRef<::std::ffi::OsStr>,
+    {
+        let library = ::libloading::Library::new(path)?;
+        Self::from_library(library)
+    }
+    pub unsafe fn from_library<L>(library: L) -> Result<Self, ::libloading::Error>
+    where
+        L: Into<::libloading::Library>,
+    {
+        let __library = library.into();
+        let NDIlib_initialize = __library.get(b"NDIlib_initialize\0").map(|sym| *sym);
+        let NDIlib_destroy = __library.get(b"NDIlib_destroy\0").map(|sym| *sym);
+        let NDIlib_version = __library.get(b"NDIlib_version\0").map(|sym| *sym);
+        let NDIlib_is_supported_CPU = __library.get(b"NDIlib_is_supported_CPU\0").map(|sym| *sym);
+        let NDIlib_find_create_v2 = __library.get(b"NDIlib_find_create_v2\0").map(|sym| *sym);
+        let NDIlib_find_destroy = __library.get(b"NDIlib_find_destroy\0").map(|sym| *sym);
+        let NDIlib_find_get_current_sources = __library
+            .get(b"NDIlib_find_get_current_sources\0")
+            .map(|sym| *sym);
+        let NDIlib_find_wait_for_sources = __library
+            .get(b"NDIlib_find_wait_for_sources\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_create_v3 = __library.get(b"NDIlib_recv_create_v3\0").map(|sym| *sym);
+        let NDIlib_recv_destroy = __library.get(b"NDIlib_recv_destroy\0").map(|sym| *sym);
+        let NDIlib_recv_connect = __library.get(b"NDIlib_recv_connect\0").map(|sym| *sym);
+        let NDIlib_recv_capture_v2 = __library.get(b"NDIlib_recv_capture_v2\0").map(|sym| *sym);
+        let NDIlib_recv_capture_v3 = __library.get(b"NDIlib_recv_capture_v3\0").map(|sym| *sym);
+        let NDIlib_recv_free_video_v2 = __library
+            .get(b"NDIlib_recv_free_video_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_free_audio_v2 = __library
+            .get(b"NDIlib_recv_free_audio_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_free_audio_v3 = __library
+            .get(b"NDIlib_recv_free_audio_v3\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_free_metadata = __library
+            .get(b"NDIlib_recv_free_metadata\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_free_string = __library.get(b"NDIlib_recv_free_string\0").map(|sym| *sym);
+        let NDIlib_recv_send_metadata = __library
+            .get(b"NDIlib_recv_send_metadata\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_set_tally = __library.get(b"NDIlib_recv_set_tally\0").map(|sym| *sym);
+        let NDIlib_recv_get_performance = __library
+            .get(b"NDIlib_recv_get_performance\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_get_queue = __library.get(b"NDIlib_recv_get_queue\0").map(|sym| *sym);
+        let NDIlib_recv_clear_connection_metadata = __library
+            .get(b"NDIlib_recv_clear_connection_metadata\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_add_connection_metadata = __library
+            .get(b"NDIlib_recv_add_connection_metadata\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_get_no_connections = __library
+            .get(b"NDIlib_recv_get_no_connections\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_get_web_control = __library
+            .get(b"NDIlib_recv_get_web_control\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_is_supported = __library
+            .get(b"NDIlib_recv_ptz_is_supported\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_recording_is_supported = __library
+            .get(b"NDIlib_recv_recording_is_supported\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_zoom = __library.get(b"NDIlib_recv_ptz_zoom\0").map(|sym| *sym);
+        let NDIlib_recv_ptz_zoom_speed = __library
+            .get(b"NDIlib_recv_ptz_zoom_speed\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_pan_tilt = __library.get(b"NDIlib_recv_ptz_pan_tilt\0").map(|sym| *sym);
+        let NDIlib_recv_ptz_pan_tilt_speed = __library
+            .get(b"NDIlib_recv_ptz_pan_tilt_speed\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_store_preset = __library
+            .get(b"NDIlib_recv_ptz_store_preset\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_recall_preset = __library
+            .get(b"NDIlib_recv_ptz_recall_preset\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_auto_focus = __library
+            .get(b"NDIlib_recv_ptz_auto_focus\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_focus = __library.get(b"NDIlib_recv_ptz_focus\0").map(|sym| *sym);
+        let NDIlib_recv_ptz_focus_speed = __library
+            .get(b"NDIlib_recv_ptz_focus_speed\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_white_balance_auto = __library
+            .get(b"NDIlib_recv_ptz_white_balance_auto\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_white_balance_indoor = __library
+            .get(b"NDIlib_recv_ptz_white_balance_indoor\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_white_balance_outdoor = __library
+            .get(b"NDIlib_recv_ptz_white_balance_outdoor\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_white_balance_oneshot = __library
+            .get(b"NDIlib_recv_ptz_white_balance_oneshot\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_white_balance_manual = __library
+            .get(b"NDIlib_recv_ptz_white_balance_manual\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_exposure_auto = __library
+            .get(b"NDIlib_recv_ptz_exposure_auto\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_exposure_manual = __library
+            .get(b"NDIlib_recv_ptz_exposure_manual\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_ptz_exposure_manual_v2 = __library
+            .get(b"NDIlib_recv_ptz_exposure_manual_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_recording_start = __library
+            .get(b"NDIlib_recv_recording_start\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_recording_stop = __library
+            .get(b"NDIlib_recv_recording_stop\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_recording_set_audio_level = __library
+            .get(b"NDIlib_recv_recording_set_audio_level\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_recording_is_recording = __library
+            .get(b"NDIlib_recv_recording_is_recording\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_recording_get_filename = __library
+            .get(b"NDIlib_recv_recording_get_filename\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_recording_get_error = __library
+            .get(b"NDIlib_recv_recording_get_error\0")
+            .map(|sym| *sym);
+        let NDIlib_recv_recording_get_times = __library
+            .get(b"NDIlib_recv_recording_get_times\0")
+            .map(|sym| *sym);
+        let NDIlib_send_create = __library.get(b"NDIlib_send_create\0").map(|sym| *sym);
+        let NDIlib_send_destroy = __library.get(b"NDIlib_send_destroy\0").map(|sym| *sym);
+        let NDIlib_send_send_video_v2 = __library
+            .get(b"NDIlib_send_send_video_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_send_send_video_async_v2 = __library
+            .get(b"NDIlib_send_send_video_async_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_send_send_audio_v2 = __library
+            .get(b"NDIlib_send_send_audio_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_send_send_audio_v3 = __library
+            .get(b"NDIlib_send_send_audio_v3\0")
+            .map(|sym| *sym);
+        let NDIlib_send_send_metadata = __library
+            .get(b"NDIlib_send_send_metadata\0")
+            .map(|sym| *sym);
+        let NDIlib_send_capture = __library.get(b"NDIlib_send_capture\0").map(|sym| *sym);
+        let NDIlib_send_free_metadata = __library
+            .get(b"NDIlib_send_free_metadata\0")
+            .map(|sym| *sym);
+        let NDIlib_send_get_tally = __library.get(b"NDIlib_send_get_tally\0").map(|sym| *sym);
+        let NDIlib_send_get_no_connections = __library
+            .get(b"NDIlib_send_get_no_connections\0")
+            .map(|sym| *sym);
+        let NDIlib_send_clear_connection_metadata = __library
+            .get(b"NDIlib_send_clear_connection_metadata\0")
+            .map(|sym| *sym);
+        let NDIlib_send_add_connection_metadata = __library
+            .get(b"NDIlib_send_add_connection_metadata\0")
+            .map(|sym| *sym);
+        let NDIlib_send_set_failover = __library.get(b"NDIlib_send_set_failover\0").map(|sym| *sym);
+        let NDIlib_send_get_source_name = __library
+            .get(b"NDIlib_send_get_source_name\0")
+            .map(|sym| *sym);
+        let NDIlib_routing_create = __library.get(b"NDIlib_routing_create\0").map(|sym| *sym);
+        let NDIlib_routing_destroy = __library.get(b"NDIlib_routing_destroy\0").map(|sym| *sym);
+        let NDIlib_routing_change = __library.get(b"NDIlib_routing_change\0").map(|sym| *sym);
+        let NDIlib_routing_clear = __library.get(b"NDIlib_routing_clear\0").map(|sym| *sym);
+        let NDIlib_routing_get_no_connections = __library
+            .get(b"NDIlib_routing_get_no_connections\0")
+            .map(|sym| *sym);
+        let NDIlib_routing_get_source_name = __library
+            .get(b"NDIlib_routing_get_source_name\0")
+            .map(|sym| *sym);
+        let NDIlib_util_send_send_audio_interleaved_16s = __library
+            .get(b"NDIlib_util_send_send_audio_interleaved_16s\0")
+            .map(|sym| *sym);
+        let NDIlib_util_send_send_audio_interleaved_32s = __library
+            .get(b"NDIlib_util_send_send_audio_interleaved_32s\0")
+            .map(|sym| *sym);
+        let NDIlib_util_send_send_audio_interleaved_32f = __library
+            .get(b"NDIlib_util_send_send_audio_interleaved_32f\0")
+            .map(|sym| *sym);
+        let NDIlib_util_audio_to_interleaved_16s_v2 = __library
+            .get(b"NDIlib_util_audio_to_interleaved_16s_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_util_audio_from_interleaved_16s_v2 = __library
+            .get(b"NDIlib_util_audio_from_interleaved_16s_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_util_audio_to_interleaved_32s_v2 = __library
+            .get(b"NDIlib_util_audio_to_interleaved_32s_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_util_audio_from_interleaved_32s_v2 = __library
+            .get(b"NDIlib_util_audio_from_interleaved_32s_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_util_audio_to_interleaved_32f_v2 = __library
+            .get(b"NDIlib_util_audio_to_interleaved_32f_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_util_audio_from_interleaved_32f_v2 = __library
+            .get(b"NDIlib_util_audio_from_interleaved_32f_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_util_V210_to_P216 = __library.get(b"NDIlib_util_V210_to_P216\0").map(|sym| *sym);
+        let NDIlib_util_P216_to_V210 = __library.get(b"NDIlib_util_P216_to_V210\0").map(|sym| *sym);
+        let NDIlib_find_create2 = __library.get(b"NDIlib_find_create2\0").map(|sym| *sym);
+        let NDIlib_find_create = __library.get(b"NDIlib_find_create\0").map(|sym| *sym);
+        let NDIlib_find_get_sources = __library.get(b"NDIlib_find_get_sources\0").map(|sym| *sym);
+        let NDIlib_recv_create_v2 = __library.get(b"NDIlib_recv_create_v2\0").map(|sym| *sym);
+        let NDIlib_recv_create2 = __library.get(b"NDIlib_recv_create2\0").map(|sym| *sym);
+        let NDIlib_recv_create = __library.get(b"NDIlib_recv_create\0").map(|sym| *sym);
+        let NDIlib_recv_capture = __library.get(b"NDIlib_recv_capture\0").map(|sym| *sym);
+        let NDIlib_recv_free_video = __library.get(b"NDIlib_recv_free_video\0").map(|sym| *sym);
+        let NDIlib_recv_free_audio = __library.get(b"NDIlib_recv_free_audio\0").map(|sym| *sym);
+        let NDIlib_send_send_video = __library.get(b"NDIlib_send_send_video\0").map(|sym| *sym);
+        let NDIlib_send_send_video_async = __library
+            .get(b"NDIlib_send_send_video_async\0")
+            .map(|sym| *sym);
+        let NDIlib_send_send_audio = __library.get(b"NDIlib_send_send_audio\0").map(|sym| *sym);
+        let NDIlib_util_audio_to_interleaved_16s = __library
+            .get(b"NDIlib_util_audio_to_interleaved_16s\0")
+            .map(|sym| *sym);
+        let NDIlib_util_audio_from_interleaved_16s = __library
+            .get(b"NDIlib_util_audio_from_interleaved_16s\0")
+            .map(|sym| *sym);
+        let NDIlib_util_audio_to_interleaved_32f = __library
+            .get(b"NDIlib_util_audio_to_interleaved_32f\0")
+            .map(|sym| *sym);
+        let NDIlib_util_audio_from_interleaved_32f = __library
+            .get(b"NDIlib_util_audio_from_interleaved_32f\0")
+            .map(|sym| *sym);
+        let NDIlib_framesync_create = __library.get(b"NDIlib_framesync_create\0").map(|sym| *sym);
+        let NDIlib_framesync_destroy = __library.get(b"NDIlib_framesync_destroy\0").map(|sym| *sym);
+        let NDIlib_framesync_capture_audio = __library
+            .get(b"NDIlib_framesync_capture_audio\0")
+            .map(|sym| *sym);
+        let NDIlib_framesync_capture_audio_v2 = __library
+            .get(b"NDIlib_framesync_capture_audio_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_framesync_free_audio = __library
+            .get(b"NDIlib_framesync_free_audio\0")
+            .map(|sym| *sym);
+        let NDIlib_framesync_free_audio_v2 = __library
+            .get(b"NDIlib_framesync_free_audio_v2\0")
+            .map(|sym| *sym);
+        let NDIlib_framesync_audio_queue_depth = __library
+            .get(b"NDIlib_framesync_audio_queue_depth\0")
+            .map(|sym| *sym);
+        let NDIlib_framesync_capture_video = __library
+            .get(b"NDIlib_framesync_capture_video\0")
+            .map(|sym| *sym);
+        let NDIlib_framesync_free_video = __library
+            .get(b"NDIlib_framesync_free_video\0")
+            .map(|sym| *sym);
+        let NDIlib_v4_load = __library.get(b"NDIlib_v4_load\0").map(|sym| *sym);
+        let NDIlib_v3_load = __library.get(b"NDIlib_v3_load\0").map(|sym| *sym);
+        let NDIlib_v2_load = __library.get(b"NDIlib_v2_load\0").map(|sym| *sym);
+        Ok(NdiDynLib {
+            __library,
+            NDIlib_initialize,
+            NDIlib_destroy,
+            NDIlib_version,
+            NDIlib_is_supported_CPU,
+            NDIlib_find_create_v2,
+            NDIlib_find_destroy,
+            NDIlib_find_get_current_sources,
+            NDIlib_find_wait_for_sources,
+            NDIlib_recv_create_v3,
+            NDIlib_recv_destroy,
+            NDIlib_recv_connect,
+            NDIlib_recv_capture_v2,
+            NDIlib_recv_capture_v3,
+            NDIlib_recv_free_video_v2,
+            NDIlib_recv_free_audio_v2,
+            NDIlib_recv_free_audio_v3,
+            NDIlib_recv_free_metadata,
+            NDIlib_recv_free_string,
+            NDIlib_recv_send_metadata,
+            NDIlib_recv_set_tally,
+            NDIlib_recv_get_performance,
+            NDIlib_recv_get_queue,
+            NDIlib_recv_clear_connection_metadata,
+            NDIlib_recv_add_connection_metadata,
+            NDIlib_recv_get_no_connections,
+            NDIlib_recv_get_web_control,
+            NDIlib_recv_ptz_is_supported,
+            NDIlib_recv_recording_is_supported,
+            NDIlib_recv_ptz_zoom,
+            NDIlib_recv_ptz_zoom_speed,
+            NDIlib_recv_ptz_pan_tilt,
+            NDIlib_recv_ptz_pan_tilt_speed,
+            NDIlib_recv_ptz_store_preset,
+            NDIlib_recv_ptz_recall_preset,
+            NDIlib_recv_ptz_auto_focus,
+            NDIlib_recv_ptz_focus,
+            NDIlib_recv_ptz_focus_speed,
+            NDIlib_recv_ptz_white_balance_auto,
+            NDIlib_recv_ptz_white_balance_indoor,
+            NDIlib_recv_ptz_white_balance_outdoor,
+            NDIlib_recv_ptz_white_balance_oneshot,
+            NDIlib_recv_ptz_white_balance_manual,
+            NDIlib_recv_ptz_exposure_auto,
+            NDIlib_recv_ptz_exposure_manual,
+            NDIlib_recv_ptz_exposure_manual_v2,
+            NDIlib_recv_recording_start,
+            NDIlib_recv_recording_stop,
+            NDIlib_recv_recording_set_audio_level,
+            NDIlib_recv_recording_is_recording,
+            NDIlib_recv_recording_get_filename,
+            NDIlib_recv_recording_get_error,
+            NDIlib_recv_recording_get_times,
+            NDIlib_send_create,
+            NDIlib_send_destroy,
+            NDIlib_send_send_video_v2,
+            NDIlib_send_send_video_async_v2,
+            NDIlib_send_send_audio_v2,
+            NDIlib_send_send_audio_v3,
+            NDIlib_send_send_metadata,
+            NDIlib_send_capture,
+            NDIlib_send_free_metadata,
+            NDIlib_send_get_tally,
+            NDIlib_send_get_no_connections,
+            NDIlib_send_clear_connection_metadata,
+            NDIlib_send_add_connection_metadata,
+            NDIlib_send_set_failover,
+            NDIlib_send_get_source_name,
+            NDIlib_routing_create,
+            NDIlib_routing_destroy,
+            NDIlib_routing_change,
+            NDIlib_routing_clear,
+            NDIlib_routing_get_no_connections,
+            NDIlib_routing_get_source_name,
+            NDIlib_util_send_send_audio_interleaved_16s,
+            NDIlib_util_send_send_audio_interleaved_32s,
+            NDIlib_util_send_send_audio_interleaved_32f,
+            NDIlib_util_audio_to_interleaved_16s_v2,
+            NDIlib_util_audio_from_interleaved_16s_v2,
+            NDIlib_util_audio_to_interleaved_32s_v2,
+            NDIlib_util_audio_from_interleaved_32s_v2,
+            NDIlib_util_audio_to_interleaved_32f_v2,
+            NDIlib_util_audio_from_interleaved_32f_v2,
+            NDIlib_util_V210_to_P216,
+            NDIlib_util_P216_to_V210,
+            NDIlib_find_create2,
+            NDIlib_find_create,
+            NDIlib_find_get_sources,
+            NDIlib_recv_create_v2,
+            NDIlib_recv_create2,
+            NDIlib_recv_create,
+            NDIlib_recv_capture,
+            NDIlib_recv_free_video,
+            NDIlib_recv_free_audio,
+            NDIlib_send_send_video,
+            NDIlib_send_send_video_async,
+            NDIlib_send_send_audio,
+            NDIlib_util_audio_to_interleaved_16s,
+            NDIlib_util_audio_from_interleaved_16s,
+            NDIlib_util_audio_to_interleaved_32f,
+            NDIlib_util_audio_from_interleaved_32f,
+            NDIlib_framesync_create,
+            NDIlib_framesync_destroy,
+            NDIlib_framesync_capture_audio,
+            NDIlib_framesync_capture_audio_v2,
+            NDIlib_framesync_free_audio,
+            NDIlib_framesync_free_audio_v2,
+            NDIlib_framesync_audio_queue_depth,
+            NDIlib_framesync_capture_video,
+            NDIlib_framesync_free_video,
+            NDIlib_v4_load,
+            NDIlib_v3_load,
+            NDIlib_v2_load,
+        })
+    }
+    pub unsafe fn NDIlib_initialize(&self) -> bool {
+        (self
+            .NDIlib_initialize
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn NDIlib_destroy(&self) -> () {
+        (self
+            .NDIlib_destroy
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn NDIlib_version(&self) -> *const ::std::os::raw::c_char {
+        (self
+            .NDIlib_version
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn NDIlib_is_supported_CPU(&self) -> bool {
+        (self
+            .NDIlib_is_supported_CPU
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn NDIlib_find_create_v2(
+        &self,
+        p_create_settings: *const NDIlib_find_create_t,
+    ) -> NDIlib_find_instance_t {
+        (self
+            .NDIlib_find_create_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_create_settings)
+    }
+    pub unsafe fn NDIlib_find_destroy(&self, p_instance: NDIlib_find_instance_t) -> () {
+        (self
+            .NDIlib_find_destroy
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_find_get_current_sources(
+        &self,
+        p_instance: NDIlib_find_instance_t,
+        p_no_sources: *mut u32,
+    ) -> *const NDIlib_source_t {
+        (self
+            .NDIlib_find_get_current_sources
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_no_sources)
+    }
+    pub unsafe fn NDIlib_find_wait_for_sources(
+        &self,
+        p_instance: NDIlib_find_instance_t,
+        timeout_in_ms: u32,
+    ) -> bool {
+        (self
+            .NDIlib_find_wait_for_sources
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, timeout_in_ms)
+    }
+    pub unsafe fn NDIlib_recv_create_v3(
+        &self,
+        p_create_settings: *const NDIlib_recv_create_v3_t,
+    ) -> NDIlib_recv_instance_t {
+        (self
+            .NDIlib_recv_create_v3
+            .as_ref()
+            .expect("Expected function, got error."))(p_create_settings)
+    }
+    pub unsafe fn NDIlib_recv_destroy(&self, p_instance: NDIlib_recv_instance_t) -> () {
+        (self
+            .NDIlib_recv_destroy
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_connect(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_src: *const NDIlib_source_t,
+    ) -> () {
+        (self
+            .NDIlib_recv_connect
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_src)
+    }
+    pub unsafe fn NDIlib_recv_capture_v2(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_video_data: *mut NDIlib_video_frame_v2_t,
+        p_audio_data: *mut NDIlib_audio_frame_v2_t,
+        p_metadata: *mut NDIlib_metadata_frame_t,
+        timeout_in_ms: u32,
+    ) -> NDIlib_frame_type_e {
+        (self
+            .NDIlib_recv_capture_v2
+            .as_ref()
+            .expect("Expected function, got error."))(
+            p_instance,
+            p_video_data,
+            p_audio_data,
+            p_metadata,
+            timeout_in_ms,
+        )
+    }
+    pub unsafe fn NDIlib_recv_capture_v3(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_video_data: *mut NDIlib_video_frame_v2_t,
+        p_audio_data: *mut NDIlib_audio_frame_v3_t,
+        p_metadata: *mut NDIlib_metadata_frame_t,
+        timeout_in_ms: u32,
+    ) -> NDIlib_frame_type_e {
+        (self
+            .NDIlib_recv_capture_v3
+            .as_ref()
+            .expect("Expected function, got error."))(
+            p_instance,
+            p_video_data,
+            p_audio_data,
+            p_metadata,
+            timeout_in_ms,
+        )
+    }
+    pub unsafe fn NDIlib_recv_free_video_v2(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_video_data: *const NDIlib_video_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_recv_free_video_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_video_data)
+    }
+    pub unsafe fn NDIlib_recv_free_audio_v2(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_audio_data: *const NDIlib_audio_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_recv_free_audio_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_audio_data)
+    }
+    pub unsafe fn NDIlib_recv_free_audio_v3(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_audio_data: *const NDIlib_audio_frame_v3_t,
+    ) -> () {
+        (self
+            .NDIlib_recv_free_audio_v3
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_audio_data)
+    }
+    pub unsafe fn NDIlib_recv_free_metadata(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_metadata: *const NDIlib_metadata_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_recv_free_metadata
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_metadata)
+    }
+    pub unsafe fn NDIlib_recv_free_string(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_string: *const ::std::os::raw::c_char,
+    ) -> () {
+        (self
+            .NDIlib_recv_free_string
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_string)
+    }
+    pub unsafe fn NDIlib_recv_send_metadata(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_metadata: *const NDIlib_metadata_frame_t,
+    ) -> bool {
+        (self
+            .NDIlib_recv_send_metadata
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_metadata)
+    }
+    pub unsafe fn NDIlib_recv_set_tally(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_tally: *const NDIlib_tally_t,
+    ) -> bool {
+        (self
+            .NDIlib_recv_set_tally
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_tally)
+    }
+    pub unsafe fn NDIlib_recv_get_performance(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_total: *mut NDIlib_recv_performance_t,
+        p_dropped: *mut NDIlib_recv_performance_t,
+    ) -> () {
+        (self
+            .NDIlib_recv_get_performance
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_total, p_dropped)
+    }
+    pub unsafe fn NDIlib_recv_get_queue(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_total: *mut NDIlib_recv_queue_t,
+    ) -> () {
+        (self
+            .NDIlib_recv_get_queue
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_total)
+    }
+    pub unsafe fn NDIlib_recv_clear_connection_metadata(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+    ) -> () {
+        (self
+            .NDIlib_recv_clear_connection_metadata
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_add_connection_metadata(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_metadata: *const NDIlib_metadata_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_recv_add_connection_metadata
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_metadata)
+    }
+    pub unsafe fn NDIlib_recv_get_no_connections(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .NDIlib_recv_get_no_connections
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_get_web_control(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+    ) -> *const ::std::os::raw::c_char {
+        (self
+            .NDIlib_recv_get_web_control
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_ptz_is_supported(&self, p_instance: NDIlib_recv_instance_t) -> bool {
+        (self
+            .NDIlib_recv_ptz_is_supported
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_recording_is_supported(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+    ) -> bool {
+        (self
+            .NDIlib_recv_recording_is_supported
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_ptz_zoom(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        zoom_value: f32,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_zoom
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, zoom_value)
+    }
+    pub unsafe fn NDIlib_recv_ptz_zoom_speed(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        zoom_speed: f32,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_zoom_speed
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, zoom_speed)
+    }
+    pub unsafe fn NDIlib_recv_ptz_pan_tilt(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        pan_value: f32,
+        tilt_value: f32,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_pan_tilt
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, pan_value, tilt_value)
+    }
+    pub unsafe fn NDIlib_recv_ptz_pan_tilt_speed(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        pan_speed: f32,
+        tilt_speed: f32,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_pan_tilt_speed
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, pan_speed, tilt_speed)
+    }
+    pub unsafe fn NDIlib_recv_ptz_store_preset(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        preset_no: ::std::os::raw::c_int,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_store_preset
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, preset_no)
+    }
+    pub unsafe fn NDIlib_recv_ptz_recall_preset(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        preset_no: ::std::os::raw::c_int,
+        speed: f32,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_recall_preset
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, preset_no, speed)
+    }
+    pub unsafe fn NDIlib_recv_ptz_auto_focus(&self, p_instance: NDIlib_recv_instance_t) -> bool {
+        (self
+            .NDIlib_recv_ptz_auto_focus
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_ptz_focus(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        focus_value: f32,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_focus
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, focus_value)
+    }
+    pub unsafe fn NDIlib_recv_ptz_focus_speed(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        focus_speed: f32,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_focus_speed
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, focus_speed)
+    }
+    pub unsafe fn NDIlib_recv_ptz_white_balance_auto(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_white_balance_auto
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_ptz_white_balance_indoor(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_white_balance_indoor
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_ptz_white_balance_outdoor(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_white_balance_outdoor
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_ptz_white_balance_oneshot(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_white_balance_oneshot
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_ptz_white_balance_manual(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        red: f32,
+        blue: f32,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_white_balance_manual
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, red, blue)
+    }
+    pub unsafe fn NDIlib_recv_ptz_exposure_auto(&self, p_instance: NDIlib_recv_instance_t) -> bool {
+        (self
+            .NDIlib_recv_ptz_exposure_auto
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_ptz_exposure_manual(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        exposure_level: f32,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_exposure_manual
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, exposure_level)
+    }
+    pub unsafe fn NDIlib_recv_ptz_exposure_manual_v2(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        iris: f32,
+        gain: f32,
+        shutter_speed: f32,
+    ) -> bool {
+        (self
+            .NDIlib_recv_ptz_exposure_manual_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, iris, gain, shutter_speed)
+    }
+    pub unsafe fn NDIlib_recv_recording_start(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_filename_hint: *const ::std::os::raw::c_char,
+    ) -> bool {
+        (self
+            .NDIlib_recv_recording_start
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_filename_hint)
+    }
+    pub unsafe fn NDIlib_recv_recording_stop(&self, p_instance: NDIlib_recv_instance_t) -> bool {
+        (self
+            .NDIlib_recv_recording_stop
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_recording_set_audio_level(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        level_dB: f32,
+    ) -> bool {
+        (self
+            .NDIlib_recv_recording_set_audio_level
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, level_dB)
+    }
+    pub unsafe fn NDIlib_recv_recording_is_recording(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+    ) -> bool {
+        (self
+            .NDIlib_recv_recording_is_recording
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_recording_get_filename(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+    ) -> *const ::std::os::raw::c_char {
+        (self
+            .NDIlib_recv_recording_get_filename
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_recording_get_error(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+    ) -> *const ::std::os::raw::c_char {
+        (self
+            .NDIlib_recv_recording_get_error
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_recv_recording_get_times(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_times: *mut NDIlib_recv_recording_time_t,
+    ) -> bool {
+        (self
+            .NDIlib_recv_recording_get_times
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_times)
+    }
+    pub unsafe fn NDIlib_send_create(
+        &self,
+        p_create_settings: *const NDIlib_send_create_t,
+    ) -> NDIlib_send_instance_t {
+        (self
+            .NDIlib_send_create
+            .as_ref()
+            .expect("Expected function, got error."))(p_create_settings)
+    }
+    pub unsafe fn NDIlib_send_destroy(&self, p_instance: NDIlib_send_instance_t) -> () {
+        (self
+            .NDIlib_send_destroy
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_send_send_video_v2(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_video_data: *const NDIlib_video_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_send_send_video_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_video_data)
+    }
+    pub unsafe fn NDIlib_send_send_video_async_v2(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_video_data: *const NDIlib_video_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_send_send_video_async_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_video_data)
+    }
+    pub unsafe fn NDIlib_send_send_audio_v2(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_audio_data: *const NDIlib_audio_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_send_send_audio_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_audio_data)
+    }
+    pub unsafe fn NDIlib_send_send_audio_v3(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_audio_data: *const NDIlib_audio_frame_v3_t,
+    ) -> () {
+        (self
+            .NDIlib_send_send_audio_v3
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_audio_data)
+    }
+    pub unsafe fn NDIlib_send_send_metadata(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_metadata: *const NDIlib_metadata_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_send_send_metadata
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_metadata)
+    }
+    pub unsafe fn NDIlib_send_capture(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_metadata: *mut NDIlib_metadata_frame_t,
+        timeout_in_ms: u32,
+    ) -> NDIlib_frame_type_e {
+        (self
+            .NDIlib_send_capture
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_metadata, timeout_in_ms)
+    }
+    pub unsafe fn NDIlib_send_free_metadata(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_metadata: *const NDIlib_metadata_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_send_free_metadata
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_metadata)
+    }
+    pub unsafe fn NDIlib_send_get_tally(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_tally: *mut NDIlib_tally_t,
+        timeout_in_ms: u32,
+    ) -> bool {
+        (self
+            .NDIlib_send_get_tally
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_tally, timeout_in_ms)
+    }
+    pub unsafe fn NDIlib_send_get_no_connections(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        timeout_in_ms: u32,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .NDIlib_send_get_no_connections
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, timeout_in_ms)
+    }
+    pub unsafe fn NDIlib_send_clear_connection_metadata(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+    ) -> () {
+        (self
+            .NDIlib_send_clear_connection_metadata
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_send_add_connection_metadata(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_metadata: *const NDIlib_metadata_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_send_add_connection_metadata
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_metadata)
+    }
+    pub unsafe fn NDIlib_send_set_failover(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_failover_source: *const NDIlib_source_t,
+    ) -> () {
+        (self
+            .NDIlib_send_set_failover
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_failover_source)
+    }
+    pub unsafe fn NDIlib_send_get_source_name(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+    ) -> *const NDIlib_source_t {
+        (self
+            .NDIlib_send_get_source_name
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_routing_create(
+        &self,
+        p_create_settings: *const NDIlib_routing_create_t,
+    ) -> NDIlib_routing_instance_t {
+        (self
+            .NDIlib_routing_create
+            .as_ref()
+            .expect("Expected function, got error."))(p_create_settings)
+    }
+    pub unsafe fn NDIlib_routing_destroy(&self, p_instance: NDIlib_routing_instance_t) -> () {
+        (self
+            .NDIlib_routing_destroy
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_routing_change(
+        &self,
+        p_instance: NDIlib_routing_instance_t,
+        p_source: *const NDIlib_source_t,
+    ) -> bool {
+        (self
+            .NDIlib_routing_change
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_source)
+    }
+    pub unsafe fn NDIlib_routing_clear(&self, p_instance: NDIlib_routing_instance_t) -> bool {
+        (self
+            .NDIlib_routing_clear
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_routing_get_no_connections(
+        &self,
+        p_instance: NDIlib_routing_instance_t,
+        timeout_in_ms: u32,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .NDIlib_routing_get_no_connections
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, timeout_in_ms)
+    }
+    pub unsafe fn NDIlib_routing_get_source_name(
+        &self,
+        p_instance: NDIlib_routing_instance_t,
+    ) -> *const NDIlib_source_t {
+        (self
+            .NDIlib_routing_get_source_name
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_util_send_send_audio_interleaved_16s(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_audio_data: *const NDIlib_audio_frame_interleaved_16s_t,
+    ) -> () {
+        (self
+            .NDIlib_util_send_send_audio_interleaved_16s
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_audio_data)
+    }
+    pub unsafe fn NDIlib_util_send_send_audio_interleaved_32s(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_audio_data: *const NDIlib_audio_frame_interleaved_32s_t,
+    ) -> () {
+        (self
+            .NDIlib_util_send_send_audio_interleaved_32s
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_audio_data)
+    }
+    pub unsafe fn NDIlib_util_send_send_audio_interleaved_32f(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_audio_data: *const NDIlib_audio_frame_interleaved_32f_t,
+    ) -> () {
+        (self
+            .NDIlib_util_send_send_audio_interleaved_32f
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_audio_data)
+    }
+    pub unsafe fn NDIlib_util_audio_to_interleaved_16s_v2(
+        &self,
+        p_src: *const NDIlib_audio_frame_v2_t,
+        p_dst: *mut NDIlib_audio_frame_interleaved_16s_t,
+    ) -> () {
+        (self
+            .NDIlib_util_audio_to_interleaved_16s_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_src, p_dst)
+    }
+    pub unsafe fn NDIlib_util_audio_from_interleaved_16s_v2(
+        &self,
+        p_src: *const NDIlib_audio_frame_interleaved_16s_t,
+        p_dst: *mut NDIlib_audio_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_util_audio_from_interleaved_16s_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_src, p_dst)
+    }
+    pub unsafe fn NDIlib_util_audio_to_interleaved_32s_v2(
+        &self,
+        p_src: *const NDIlib_audio_frame_v2_t,
+        p_dst: *mut NDIlib_audio_frame_interleaved_32s_t,
+    ) -> () {
+        (self
+            .NDIlib_util_audio_to_interleaved_32s_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_src, p_dst)
+    }
+    pub unsafe fn NDIlib_util_audio_from_interleaved_32s_v2(
+        &self,
+        p_src: *const NDIlib_audio_frame_interleaved_32s_t,
+        p_dst: *mut NDIlib_audio_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_util_audio_from_interleaved_32s_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_src, p_dst)
+    }
+    pub unsafe fn NDIlib_util_audio_to_interleaved_32f_v2(
+        &self,
+        p_src: *const NDIlib_audio_frame_v2_t,
+        p_dst: *mut NDIlib_audio_frame_interleaved_32f_t,
+    ) -> () {
+        (self
+            .NDIlib_util_audio_to_interleaved_32f_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_src, p_dst)
+    }
+    pub unsafe fn NDIlib_util_audio_from_interleaved_32f_v2(
+        &self,
+        p_src: *const NDIlib_audio_frame_interleaved_32f_t,
+        p_dst: *mut NDIlib_audio_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_util_audio_from_interleaved_32f_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_src, p_dst)
+    }
+    pub unsafe fn NDIlib_util_V210_to_P216(
+        &self,
+        p_src_v210: *const NDIlib_video_frame_v2_t,
+        p_dst_p216: *mut NDIlib_video_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_util_V210_to_P216
+            .as_ref()
+            .expect("Expected function, got error."))(p_src_v210, p_dst_p216)
+    }
+    pub unsafe fn NDIlib_util_P216_to_V210(
+        &self,
+        p_src_p216: *const NDIlib_video_frame_v2_t,
+        p_dst_v210: *mut NDIlib_video_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_util_P216_to_V210
+            .as_ref()
+            .expect("Expected function, got error."))(p_src_p216, p_dst_v210)
+    }
+    pub unsafe fn NDIlib_find_create2(
+        &self,
+        p_create_settings: *const NDIlib_find_create_t,
+    ) -> NDIlib_find_instance_t {
+        (self
+            .NDIlib_find_create2
+            .as_ref()
+            .expect("Expected function, got error."))(p_create_settings)
+    }
+    pub unsafe fn NDIlib_find_create(
+        &self,
+        p_create_settings: *const NDIlib_find_create_t,
+    ) -> NDIlib_find_instance_t {
+        (self
+            .NDIlib_find_create
+            .as_ref()
+            .expect("Expected function, got error."))(p_create_settings)
+    }
+    pub unsafe fn NDIlib_find_get_sources(
+        &self,
+        p_instance: NDIlib_find_instance_t,
+        p_no_sources: *mut u32,
+        timeout_in_ms: u32,
+    ) -> *const NDIlib_source_t {
+        (self
+            .NDIlib_find_get_sources
+            .as_ref()
+            .expect("Expected function, got error."))(
+            p_instance, p_no_sources, timeout_in_ms
+        )
+    }
+    pub unsafe fn NDIlib_recv_create_v2(
+        &self,
+        p_create_settings: *const NDIlib_recv_create_t,
+    ) -> NDIlib_recv_instance_t {
+        (self
+            .NDIlib_recv_create_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_create_settings)
+    }
+    pub unsafe fn NDIlib_recv_create2(
+        &self,
+        p_create_settings: *const NDIlib_recv_create_t,
+    ) -> NDIlib_recv_instance_t {
+        (self
+            .NDIlib_recv_create2
+            .as_ref()
+            .expect("Expected function, got error."))(p_create_settings)
+    }
+    pub unsafe fn NDIlib_recv_create(
+        &self,
+        p_create_settings: *const NDIlib_recv_create_t,
+    ) -> NDIlib_recv_instance_t {
+        (self
+            .NDIlib_recv_create
+            .as_ref()
+            .expect("Expected function, got error."))(p_create_settings)
+    }
+    pub unsafe fn NDIlib_recv_capture(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_video_data: *mut NDIlib_video_frame_t,
+        p_audio_data: *mut NDIlib_audio_frame_t,
+        p_metadata: *mut NDIlib_metadata_frame_t,
+        timeout_in_ms: u32,
+    ) -> NDIlib_frame_type_e {
+        (self
+            .NDIlib_recv_capture
+            .as_ref()
+            .expect("Expected function, got error."))(
+            p_instance,
+            p_video_data,
+            p_audio_data,
+            p_metadata,
+            timeout_in_ms,
+        )
+    }
+    pub unsafe fn NDIlib_recv_free_video(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_video_data: *const NDIlib_video_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_recv_free_video
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_video_data)
+    }
+    pub unsafe fn NDIlib_recv_free_audio(
+        &self,
+        p_instance: NDIlib_recv_instance_t,
+        p_audio_data: *const NDIlib_audio_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_recv_free_audio
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_audio_data)
+    }
+    pub unsafe fn NDIlib_send_send_video(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_video_data: *const NDIlib_video_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_send_send_video
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_video_data)
+    }
+    pub unsafe fn NDIlib_send_send_video_async(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_video_data: *const NDIlib_video_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_send_send_video_async
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_video_data)
+    }
+    pub unsafe fn NDIlib_send_send_audio(
+        &self,
+        p_instance: NDIlib_send_instance_t,
+        p_audio_data: *const NDIlib_audio_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_send_send_audio
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_audio_data)
+    }
+    pub unsafe fn NDIlib_util_audio_to_interleaved_16s(
+        &self,
+        p_src: *const NDIlib_audio_frame_t,
+        p_dst: *mut NDIlib_audio_frame_interleaved_16s_t,
+    ) -> () {
+        (self
+            .NDIlib_util_audio_to_interleaved_16s
+            .as_ref()
+            .expect("Expected function, got error."))(p_src, p_dst)
+    }
+    pub unsafe fn NDIlib_util_audio_from_interleaved_16s(
+        &self,
+        p_src: *const NDIlib_audio_frame_interleaved_16s_t,
+        p_dst: *mut NDIlib_audio_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_util_audio_from_interleaved_16s
+            .as_ref()
+            .expect("Expected function, got error."))(p_src, p_dst)
+    }
+    pub unsafe fn NDIlib_util_audio_to_interleaved_32f(
+        &self,
+        p_src: *const NDIlib_audio_frame_t,
+        p_dst: *mut NDIlib_audio_frame_interleaved_32f_t,
+    ) -> () {
+        (self
+            .NDIlib_util_audio_to_interleaved_32f
+            .as_ref()
+            .expect("Expected function, got error."))(p_src, p_dst)
+    }
+    pub unsafe fn NDIlib_util_audio_from_interleaved_32f(
+        &self,
+        p_src: *const NDIlib_audio_frame_interleaved_32f_t,
+        p_dst: *mut NDIlib_audio_frame_t,
+    ) -> () {
+        (self
+            .NDIlib_util_audio_from_interleaved_32f
+            .as_ref()
+            .expect("Expected function, got error."))(p_src, p_dst)
+    }
+    pub unsafe fn NDIlib_framesync_create(
+        &self,
+        p_receiver: NDIlib_recv_instance_t,
+    ) -> NDIlib_framesync_instance_t {
+        (self
+            .NDIlib_framesync_create
+            .as_ref()
+            .expect("Expected function, got error."))(p_receiver)
+    }
+    pub unsafe fn NDIlib_framesync_destroy(&self, p_instance: NDIlib_framesync_instance_t) -> () {
+        (self
+            .NDIlib_framesync_destroy
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_framesync_capture_audio(
+        &self,
+        p_instance: NDIlib_framesync_instance_t,
+        p_audio_data: *mut NDIlib_audio_frame_v2_t,
+        sample_rate: ::std::os::raw::c_int,
+        no_channels: ::std::os::raw::c_int,
+        no_samples: ::std::os::raw::c_int,
+    ) -> () {
+        (self
+            .NDIlib_framesync_capture_audio
+            .as_ref()
+            .expect("Expected function, got error."))(
+            p_instance,
+            p_audio_data,
+            sample_rate,
+            no_channels,
+            no_samples,
+        )
+    }
+    pub unsafe fn NDIlib_framesync_capture_audio_v2(
+        &self,
+        p_instance: NDIlib_framesync_instance_t,
+        p_audio_data: *mut NDIlib_audio_frame_v3_t,
+        sample_rate: ::std::os::raw::c_int,
+        no_channels: ::std::os::raw::c_int,
+        no_samples: ::std::os::raw::c_int,
+    ) -> () {
+        (self
+            .NDIlib_framesync_capture_audio_v2
+            .as_ref()
+            .expect("Expected function, got error."))(
+            p_instance,
+            p_audio_data,
+            sample_rate,
+            no_channels,
+            no_samples,
+        )
+    }
+    pub unsafe fn NDIlib_framesync_free_audio(
+        &self,
+        p_instance: NDIlib_framesync_instance_t,
+        p_audio_data: *mut NDIlib_audio_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_framesync_free_audio
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_audio_data)
+    }
+    pub unsafe fn NDIlib_framesync_free_audio_v2(
+        &self,
+        p_instance: NDIlib_framesync_instance_t,
+        p_audio_data: *mut NDIlib_audio_frame_v3_t,
+    ) -> () {
+        (self
+            .NDIlib_framesync_free_audio_v2
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_audio_data)
+    }
+    pub unsafe fn NDIlib_framesync_audio_queue_depth(
+        &self,
+        p_instance: NDIlib_framesync_instance_t,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .NDIlib_framesync_audio_queue_depth
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance)
+    }
+    pub unsafe fn NDIlib_framesync_capture_video(
+        &self,
+        p_instance: NDIlib_framesync_instance_t,
+        p_video_data: *mut NDIlib_video_frame_v2_t,
+        field_type: NDIlib_frame_format_type_e,
+    ) -> () {
+        (self
+            .NDIlib_framesync_capture_video
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_video_data, field_type)
+    }
+    pub unsafe fn NDIlib_framesync_free_video(
+        &self,
+        p_instance: NDIlib_framesync_instance_t,
+        p_video_data: *mut NDIlib_video_frame_v2_t,
+    ) -> () {
+        (self
+            .NDIlib_framesync_free_video
+            .as_ref()
+            .expect("Expected function, got error."))(p_instance, p_video_data)
+    }
+    pub unsafe fn NDIlib_v4_load(&self) -> *const NDIlib_v4 {
+        (self
+            .NDIlib_v4_load
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn NDIlib_v3_load(&self) -> *const NDIlib_v3 {
+        (self
+            .NDIlib_v3_load
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn NDIlib_v2_load(&self) -> *const NDIlib_v2 {
+        (self
+            .NDIlib_v2_load
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
 }
