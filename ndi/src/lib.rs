@@ -884,6 +884,9 @@ pub fn load_library_default() -> Result<(), libloading::Error> {
     #[cfg(target_os = "windows")]
     let names = ["Processing.NDI.Lib.x86.dll", "Processing.NDI.Lib.x64.dll"];
 
+    #[cfg(target_os = "macos")]
+    let names = ["libndi.dylib"];
+
     #[cfg(target_os = "linux")]
     let names = ["libndi.so.4", "libndi.so", "libndi"];
 
