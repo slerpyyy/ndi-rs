@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 
 fn get_output_path() -> PathBuf {
     // TODO: find a better path to this stuff
-    Path::new(&env::var("OUT_DIR").unwrap()).join("../../../deps")
+    Path::new(&env::var("OUT_DIR").unwrap()).join("../../../")
 }
 
 fn win_link_and_load() {
@@ -38,6 +38,23 @@ fn win_link_and_load() {
     std::fs::copy(src, dst).unwrap();
 }
 
+fn mac_link_and_load() {
+    println!("cargo:rustc-link-lib=ndi",);
+    let mut lib_path = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
+    lib_path.push("thirdparty/macOS/lib");
+    println!(
+        "cargo:rustc-link-search={}",
+        lib_path.to_str().unwrap().to_string()
+    );
+
+    // copy dll to OUT_DIR
+    let out_path = get_output_path();
+    let src = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap())
+        .join("thirdparty/macOS/lib/libndi.dylib");
+    let dst = Path::join(&out_path, "libndi.dylib");
+    std::fs::copy(src, dst).unwrap();
+}
+
 fn lin_link_and_load() {
     println!("cargo:rustc-link-lib=ndi",);
     let mut lib_path = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
@@ -59,7 +76,8 @@ fn main() {
     let os = env::var("CARGO_CFG_TARGET_OS").unwrap();
     match os.as_str() {
         "windows" => win_link_and_load(),
+        "macos" => mac_link_and_load(),
         "linux" => lin_link_and_load(),
-        _ => panic!("Unsupported OS for NDI"),
+        _ => panic!("Unsupported OS '{}' for NDI", os),
     };
 }

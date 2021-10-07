@@ -9,6 +9,9 @@ fn run_bindgen() {
     #[cfg(target_os = "windows")]
     let headers = "ndi/thirdparty/Windows/Include";
 
+    #[cfg(target_os = "macos")]
+    let headers = "ndi/thirdparty/macOS/include";
+
     #[cfg(target_os = "linux")]
     let headers = "ndi/thirdparty/Linux/Include";
 
@@ -30,6 +33,9 @@ fn run_bindgen() {
 
     #[cfg(target_os = "windows")]
     binding_path.push("bindings_windows.rs");
+
+    #[cfg(target_os = "macos")]
+    binding_path.push("bindings_macos.rs");
 
     #[cfg(target_os = "linux")]
     binding_path.push("bindings_linux.rs");
